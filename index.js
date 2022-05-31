@@ -1,9 +1,9 @@
 const { app, express } = require("./server");
 const { saucesRouter } = require("./routes/sauces");
 const { auth } = require("./routes/auth");
+const bodyParser = require("body-parser");
 const port = 3000;
 const path = require("path");
-const bodyParser = require("body-parser");
 
 /**
  * Connection à la base de donnée

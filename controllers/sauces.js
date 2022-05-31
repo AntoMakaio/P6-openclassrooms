@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const unlink = require("fs/promises");
+const { unlink } = require("fs/promises");
 
 const productSchema = new mongoose.Schema({
   userId: String,
@@ -20,7 +20,7 @@ const Product = mongoose.model("Product", productSchema);
 function getSauces(req, res) {
   Product.find({})
     .then((products) => res.send(products))
-    .catch((error) => res.status(500).send(error));
+    .catch((err) => res.status(500).send(err));
 }
 
 function getSauce(req, res) {
@@ -50,6 +50,8 @@ function modificationSauce(req, res) {
     params: { id },
   } = req;
 
+  console.log("req.file", req.file);
+
   const nouvelleImage = req.file != null;
   const payload = ajoutPayload(nouvelleImage, req);
 
@@ -68,7 +70,7 @@ function deleteImage(product) {
 }
 
 function ajoutPayload(nouvelleImage, req) {
-  console.log(nouvelleImage);
+  console.log("nouvelle image", nouvelleImage);
   if (!nouvelleImage) return req.body;
   const payload = JSON.parse(req.body.sauce);
   payload.imageUrl = ajoutImageUrl(req, req.file.fileName);
