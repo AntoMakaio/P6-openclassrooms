@@ -146,11 +146,15 @@ function resetLike(product, userId, res) {
 
   if (![usersLiked, usersDisliked].some((arr) => arr.includes(userId)))
     return Promise.reject("pas de vote");
+  console.log("init");
 
   if (usersLiked.includes(userId)) {
+    console.log("test 1");
+
     --product.likes;
     product.usersLiked = product.usersLiked.filter((id) => id !== userId);
   } else {
+    console.log("test");
     --product.dislikes;
     product.usersDisliked = product.usersDisliked.filter((id) => id !== userId);
   }
@@ -161,10 +165,12 @@ function incrementLike(product, userId, like) {
   const { usersLiked, usersDisliked } = product;
 
   const arrayLike = like === 1 ? usersLiked : usersDisliked;
+  console.log("usersDisliked:", usersDisliked);
+  console.log("arrayLike:", arrayLike);
   if (arrayLike.includes(userId)) return product;
   arrayLike.push(userId);
 
-  like === 1 ? ++product.likes : ++product.dislikeslikes;
+  like === 1 ? ++product.likes : ++product.dislikes;
 
   return product;
 }
