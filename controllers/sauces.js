@@ -50,8 +50,6 @@ function modificationSauce(req, res) {
     params: { id },
   } = req;
 
-  console.log("req.file", req.file);
-
   const nouvelleImage = req.file != null;
   const payload = ajoutPayload(nouvelleImage, req);
 
@@ -64,17 +62,14 @@ function modificationSauce(req, res) {
 
 function deleteImage(product) {
   if (product == null) return;
-  console.log(product);
   const imageAsupprimer = product.imageUrl.split("/").at(-1);
   return unlink("images/" + imageAsupprimer);
 }
 
 function ajoutPayload(nouvelleImage, req) {
-  console.log("nouvelle image", nouvelleImage);
   if (!nouvelleImage) return req.body;
   const payload = JSON.parse(req.body.sauce);
   payload.imageUrl = ajoutImageUrl(req, req.file.fileName);
-  console.log("payload:", payload);
   return payload;
 }
 
@@ -121,6 +116,8 @@ function createSauce(req, res) {
     .catch((err) => res.status(500).send(err));
 }
 
+// like - dislike
+
 function likeSauce(req, res) {
   const { like, userId } = req.body;
 
@@ -140,21 +137,12 @@ function updateLike(product, like, userId, res) {
 }
 
 function resetLike(product, userId, res) {
-  const { usersLiked, usersDisliked } = product;
-  if ([usersLiked, usersDisliked].every((arr) => arr.includes(userId)))
-    return Promise.reject("Double vote");
-
-  if (![usersLiked, usersDisliked].some((arr) => arr.includes(userId)))
-    return Promise.reject("pas de vote");
-  console.log("init");
+  const { usersLiked } = product;
 
   if (usersLiked.includes(userId)) {
-    console.log("test 1");
-
     --product.likes;
     product.usersLiked = product.usersLiked.filter((id) => id !== userId);
   } else {
-    console.log("test");
     --product.dislikes;
     product.usersDisliked = product.usersDisliked.filter((id) => id !== userId);
   }
@@ -165,8 +153,6 @@ function incrementLike(product, userId, like) {
   const { usersLiked, usersDisliked } = product;
 
   const arrayLike = like === 1 ? usersLiked : usersDisliked;
-  console.log("usersDisliked:", usersDisliked);
-  console.log("arrayLike:", arrayLike);
   if (arrayLike.includes(userId)) return product;
   arrayLike.push(userId);
 

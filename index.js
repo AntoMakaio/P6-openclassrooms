@@ -16,7 +16,7 @@ app.use("/api/sauces", saucesRouter);
 app.use("/api/auth", auth);
 
 /**
- * Routes
+ * Routes server
  */
 app.get("/", (req, res) => res.send("server port 3000"));
 
@@ -24,4 +24,4 @@ app.get("/", (req, res) => res.send("server port 3000"));
  * écoute
  */
 app.use("/images", express.static(path.join(__dirname, "images")));
-app.listen(port, () => console.log("Listening on port" + port));
+app.listen(port, () => console.log("Listening on port : " + port));

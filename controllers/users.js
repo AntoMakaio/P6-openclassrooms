@@ -14,11 +14,9 @@ async function createUser(req, res) {
     const hashedPassword = await hashPassword(password);
     const user = new User({ email, password: hashedPassword });
     await user.save();
-    res
-      .status(201)
-      .send({ message: "Vous êtes enregistré, Félicitations ! :" });
-  } catch (err) {
-    res.status(409).send({ message: "Utilisateur pas enregistré :" + err });
+    res.status(201).send({ message: "Vous êtes enregistré, Félicitations !" });
+  } catch (error) {
+    res.status(409).send({ message: "Utilisateur pas enregistré :" + error });
   }
 }
 
@@ -28,8 +26,9 @@ async function createUser(req, res) {
  * @returns
  */
 function hashPassword(password) {
-  const saltRounds = 10;
-  return bcrypt.hash(password, saltRounds);
+  //nombre d'itération
+  const sel = 10;
+  return bcrypt.hash(password, sel);
 }
 
 async function logUser(req, res) {
@@ -50,6 +49,11 @@ async function logUser(req, res) {
   }
 }
 
+/**
+ *
+ * @param {*} email
+ * @returns
+ */
 function createToken(email) {
   const jwtPassword = process.env.JWT_PASSWORD;
   return jwt.sign({ email: email }, jwtPassword, {

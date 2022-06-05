@@ -8,7 +8,7 @@ const uri = `mongodb+srv://${username}:${password}@cluster0.6iftq.mongodb.net/?r
 mongoose
   .connect(uri)
   .then(() => console.log("connecté à mongodb"))
-  .catch((err) => console.error("erreur connectng to mongodb:", err));
+  .catch((err) => console.error("erreur connection à mongodb:", err));
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
